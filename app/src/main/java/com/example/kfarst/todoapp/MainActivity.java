@@ -1,29 +1,27 @@
 package com.example.kfarst.todoapp;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
+import com.example.kfarst.todoapp.support.DividerItemDecoration;
+import com.example.kfarst.todoapp.support.ItemClickSupport;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import javax.sql.DataSource;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<ListItem> items;
     ListItemsDataSource dataSource;
-    ArrayAdapter<ListItem> itemsAdapter;
-    ListView lvItems;
+    ListItemsAdapter itemsAdapter;
+    RecyclerView lvItems;
 
     private final int REQUEST_CODE = 20;
 
@@ -31,46 +29,71 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lvItems = (ListView)findViewById(R.id.lvItems);
+
+        lvItems = (RecyclerView) findViewById(R.id.lvItems);
 
         dataSource = new ListItemsDataSource(this);
         dataSource.open();
 
         items = (ArrayList<ListItem>)dataSource.getAllListItems();
 
-        itemsAdapter = new ArrayAdapter<ListItem>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ListItemsAdapter(items);
         lvItems.setAdapter(itemsAdapter);
+
+        lvItems.setLayoutManager(new LinearLayoutManager(this));
+
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        lvItems.addItemDecoration(itemDecoration);
 
         setupListViewListener();
     }
 
     public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
-        items.add(dataSource.createListItem(itemText, items.size()));
-        etNewItem.setText("");
+        //EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
+        //String itemText = etNewItem.getText().toString();
+        //items.add(dataSource.createListItem(itemText, items.size()));
+        //etNewItem.setText("");
     }
 
     private void setupListViewListener() {
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
-                Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-                ListItem itemToEdit = items.get(pos);
-                i.putExtra("listItem", itemToEdit);
-                startActivityForResult(i, REQUEST_CODE);
-            }
-        });
+        ItemClickSupport.addTo(lvItems).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
-                items.remove(dataSource.deleteListItem(items.get(pos)));
-                itemsAdapter.notifyDataSetChanged();
-                return true;
-            }
+                    }
+                }
+        );
 
-        });
+        ItemClickSupport.addTo(lvItems).setOnItemLongClickListener(
+                new ItemClickSupport.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
+                        promptToDeleteForItemAt(position).show();
+                        return true;
+                    }
+                }
+        );
+       //lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       //    @Override
+       //    public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
+       //        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+       //        ListItem itemToEdit = items.get(pos);
+       //        i.putExtra("listItem", itemToEdit);
+       //        startActivityForResult(i, REQUEST_CODE);
+       //    }
+       //});
+
+       //lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+       //    @Override
+       //    public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
+       //        items.remove(dataSource.deleteListItem(items.get(pos)));
+       //        itemsAdapter.notifyDataSetChanged();
+       //        return true;
+       //    }
+
+       //});
     }
 
     @Override
@@ -87,5 +110,33 @@ public class MainActivity extends AppCompatActivity {
 
             //writeItems();
         }
+    }
+
+    private Dialog promptToDeleteForItemAt(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        // Add the buttons
+        builder
+                .setView(getLayoutInflater().inflate(R.layout.dialog_delete, null))
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        items.remove(dataSource.deleteListItem(items.get(position)));
+                        itemsAdapter.notifyItemRemoved(position);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        return builder.create();
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance("Some Title");
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

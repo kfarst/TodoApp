@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:scaleType="center"
+        android:background="@color/colorAccent"
+        android:contentDescription="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/username"
+        android:text="@string/delete_prompt_message"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:maxLines="100"
+        android:scrollHorizontally="false"
+        android:ellipsize="none"
+        android:layout_margin="8dp"
+        android:breakStrategy="high_quality"
+        android:singleLine="false" />
+</LinearLayout>
