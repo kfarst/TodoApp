@@ -6,24 +6,39 @@ package com.example.kfarst.todoapp;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import java.util.Date;
 
 import java.util.Calendar;
 // ...
 
-public class EditListItemDialogFragment extends DialogFragment {
+public class EditListItemDialogFragment extends DialogFragment implements View.OnClickListener {
+
+    private TextView title;
+    private EditText label;
+    private CalendarView calendar;
+    private ImageButton close;
+    private ImageButton save;
+
+    public interface EditListItemDialogListener {
+        void onFinishEditDialog(ListItem item);
+    }
 
     private ListItem mListItem;
 
@@ -68,11 +83,16 @@ public class EditListItemDialogFragment extends DialogFragment {
         // Fetch arguments from bundle
         mListItem = (ListItem) getArguments().getSerializable("listItem");
 
-        TextView title = (TextView) view.findViewById(R.id.listItemDialogTitle);
-        EditText label = (EditText) view.findViewById(R.id.txtLabel);
-        CalendarView calendar = (CalendarView) view.findViewById(R.id.calendarView);
+        title = (TextView) view.findViewById(R.id.listItemDialogTitle);
+        label = (EditText) view.findViewById(R.id.txtLabel);
+        calendar = (CalendarView) view.findViewById(R.id.calendarView);
+        close = (ImageButton) getView().findViewById(R.id.btnItemFormClose);
+        save = (ImageButton) getView().findViewById(R.id.btnItemFormSave);
 
-        title.setText((Long)mListItem.getId() == null ? R.string.edit_list_item : R.string.add_list_item);
+        close.setOnClickListener(this);
+        save.setOnClickListener(this);
+
+        title.setText((Long)mListItem.getId() == 0 ? R.string.add_list_item : R.string.edit_list_item);
 
         if (mListItem.getDueDate() != null)
             calendar.setDate(mListItem.getDueDate().getTime(), true, true);
@@ -84,5 +104,24 @@ public class EditListItemDialogFragment extends DialogFragment {
 
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    // Fires whenever the textfield has an action performed
+    // In this case, when the "Done" button is pressed
+    // REQUIRES a 'soft keyboard' (virtual keyboard)
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnItemFormSave) {
+            EditListItemDialogListener listener = (EditListItemDialogListener) getActivity();
+            listener.onFinishEditDialog(setListItemValues());
+        }
+
+        dismiss();
+    }
+
+    private ListItem setListItemValues() {
+        mListItem.setText(label.getText().toString());
+        mListItem.setDueDate(new Date(calendar.getDate()));
+        return mListItem;
     }
 }

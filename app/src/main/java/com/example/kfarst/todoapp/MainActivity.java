@@ -18,7 +18,7 @@ import com.example.kfarst.todoapp.support.ItemClickSupport;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditListItemDialogFragment.EditListItemDialogListener {
     ArrayList<ListItem> items;
     ListItemsDataSource dataSource;
     ListItemsAdapter itemsAdapter;
@@ -79,18 +79,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            // Extract name value from result extras
-            ListItem listItem = (ListItem) data.getSerializableExtra("listItem");
-            // Toast the name to display temporarily on screen
-            Toast.makeText(this, listItem.getText(), Toast.LENGTH_SHORT).show();
-            dataSource.updateListItem(listItem);
-            items.set(listItem.getPos(), listItem);
-            itemsAdapter.notifyDataSetChanged();
+    public void onFinishEditDialog(ListItem item) {
+        // Toast the name to display temporarily on screen
+        Toast.makeText(this, item.getText(), Toast.LENGTH_SHORT).show();
 
-            //writeItems();
+        if ((Long)item.getId() != 0) {
+            //dataSource.updateListItem(item);
+            items.set(item.getPos(), item);
+            itemsAdapter.notifyItemChanged(item.getPos());
+        } else {
+            //ListItem newItem = dataSource.createListItem(item);
+            items.add(item);
+            itemsAdapter.notifyItemInserted(item.getPos());
         }
     }
 

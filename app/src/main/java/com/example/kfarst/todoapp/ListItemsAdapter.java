@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -70,7 +72,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
 
         Button button = viewHolder.messageButton;
 
-        button.setText("High");
+        button.setText(listItem.getDueDate().toString());
         button.setEnabled(false);
     }
 
