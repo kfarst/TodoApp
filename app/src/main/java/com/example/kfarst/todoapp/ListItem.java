@@ -1,6 +1,7 @@
 package com.example.kfarst.todoapp;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by kfarst on 6/7/16.
@@ -10,6 +11,7 @@ public class ListItem implements Serializable {
     private long id;
     private int pos;
     private String text;
+    private Date dueDate;
 
     public ListItem() {
     }
@@ -18,9 +20,10 @@ public class ListItem implements Serializable {
         this.text = text;
     }
 
-    public ListItem(int pos, String text) {
+    public ListItem(int pos, String text, Date dueDate) {
         this.pos = pos;
         this.text = text;
+        this.dueDate = dueDate;
     }
 
     public void setId(long id) {
@@ -45,6 +48,14 @@ public class ListItem implements Serializable {
 
     public String getText() {
         return this.text;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     // Will be used by the ArrayAdapter in the ListView

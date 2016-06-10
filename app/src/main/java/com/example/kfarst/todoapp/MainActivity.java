@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
+                        renderListItemFragment(items.get(position));
                     }
                 }
         );
@@ -75,25 +76,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-       //lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-       //    @Override
-       //    public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
-       //        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-       //        ListItem itemToEdit = items.get(pos);
-       //        i.putExtra("listItem", itemToEdit);
-       //        startActivityForResult(i, REQUEST_CODE);
-       //    }
-       //});
-
-       //lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-       //    @Override
-       //    public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
-       //        items.remove(dataSource.deleteListItem(items.get(pos)));
-       //        itemsAdapter.notifyDataSetChanged();
-       //        return true;
-       //    }
-
-       //});
     }
 
     @Override
@@ -110,6 +92,16 @@ public class MainActivity extends AppCompatActivity {
 
             //writeItems();
         }
+    }
+
+    public void renderListItemFragment(View v) {
+        renderListItemFragment(new ListItem());
+    }
+
+    public void renderListItemFragment(ListItem item) {
+        FragmentManager fm = getSupportFragmentManager();
+        EditListItemDialogFragment editNameDialogFragment = EditListItemDialogFragment.newInstance(item);
+        editNameDialogFragment.show(fm, "fragment_list_item");
     }
 
     private Dialog promptToDeleteForItemAt(final int position) {
@@ -132,11 +124,5 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         return builder.create();
-    }
-
-    private void showEditDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance("Some Title");
-        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }
