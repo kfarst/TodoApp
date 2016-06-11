@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kfarst.todoapp.support.DividerItemDecoration;
@@ -97,14 +98,19 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
 
     private Dialog promptToDeleteForItemAt(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final ListItem itemToDelete = items.get(position);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_delete, null);
+
+        TextView dialogTitle = (TextView) dialogView.findViewById(R.id.deleteDialogTitle);
+        dialogTitle.setText(itemToDelete.getText());
 
         // Add the buttons
         builder
-                .setView(getLayoutInflater().inflate(R.layout.dialog_delete, null))
+                .setView(dialogView)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
-                        items.remove(dataSource.deleteListItem(items.get(position)));
+                        items.remove(dataSource.deleteListItem(itemToDelete));
                         itemsAdapter.notifyItemRemoved(position);
                     }
                 })
