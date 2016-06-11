@@ -1,17 +1,14 @@
 package com.example.kfarst.todoapp;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
  * Created by kfarst on 6/7/16.
  */
-public class ListItem implements Serializable {
+public class ListItem implements java.io.Serializable {
     private static final long serialVersionUID = 7526472295622776147L;
     private long id;
     private int pos;
     private String text;
-    private Date dueDate;
+    private long dueDate;
 
     public ListItem() {
     }
@@ -20,7 +17,7 @@ public class ListItem implements Serializable {
         this.text = text;
     }
 
-    public ListItem(int pos, String text, Date dueDate) {
+    public ListItem(int pos, String text, long dueDate) {
         this.pos = pos;
         this.text = text;
         this.dueDate = dueDate;
@@ -50,11 +47,11 @@ public class ListItem implements Serializable {
         return this.text;
     }
 
-    public Date getDueDate() {
+    public long getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(long dueDate) {
         this.dueDate = dueDate;
     }
 

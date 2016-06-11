@@ -71,8 +71,9 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
         textView.setText(listItem.getText());
 
         Button button = viewHolder.messageButton;
+        SimpleDateFormat dateFormat =  new SimpleDateFormat("M/d/y");
 
-        button.setText(listItem.getDueDate().toString());
+        button.setText(dateFormat.format(listItem.getDueDate()));
         button.setEnabled(false);
     }
 

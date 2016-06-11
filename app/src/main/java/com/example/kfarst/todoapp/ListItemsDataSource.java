@@ -37,7 +37,7 @@ public class ListItemsDataSource {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TEXT, item.getText());
         values.put(MySQLiteHelper.COLUMN_POSITION, item.getPos());
-        values.put(MySQLiteHelper.COLUMN_DUE_DATE, String.valueOf(item.getDueDate()));
+        values.put(MySQLiteHelper.COLUMN_DUE_DATE, item.getDueDate());
         long insertId = database.insert(MySQLiteHelper.TABLE_LIST_ITEMS, null,
                 values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LIST_ITEMS,
@@ -54,7 +54,7 @@ public class ListItemsDataSource {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TEXT, item.getText());
         values.put(MySQLiteHelper.COLUMN_POSITION, item.getPos());
-        values.put(MySQLiteHelper.COLUMN_DUE_DATE, String.valueOf(item.getDueDate()));
+        values.put(MySQLiteHelper.COLUMN_DUE_DATE, item.getDueDate());
         int editedID = database.update(MySQLiteHelper.TABLE_LIST_ITEMS, values, MySQLiteHelper.COLUMN_ID + " = " + id, null);
         System.out.println("ListItem id that was edit : " + editedID);
         return item;

@@ -94,8 +94,8 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
 
         title.setText((Long)mListItem.getId() == 0 ? R.string.add_list_item : R.string.edit_list_item);
 
-        if (mListItem.getDueDate() != null)
-            calendar.setDate(mListItem.getDueDate().getTime(), true, true);
+        if (mListItem.getDueDate() != 0)
+            calendar.setDate(mListItem.getDueDate(), true, true);
 
         // Show soft keyboard automatically and request focus to field
         label.setText(mListItem.getText());
@@ -121,7 +121,7 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
 
     private ListItem setListItemValues() {
         mListItem.setText(label.getText().toString());
-        mListItem.setDueDate(new Date(calendar.getDate()));
+        mListItem.setDueDate(calendar.getDate());
         return mListItem;
     }
 }

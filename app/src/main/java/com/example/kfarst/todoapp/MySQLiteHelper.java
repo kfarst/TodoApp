@@ -17,14 +17,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DUE_DATE = "due_date";
 
     private static final String DATABASE_NAME = "list_items.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_LIST_ITEMS + "(" + COLUMN_ID
             + " integer primary key autoincrement, "
             + COLUMN_POSITION + " integer not null,"
-            + COLUMN_DUE_DATE + " date not null,"
+            + COLUMN_DUE_DATE + " integer not null,"
             + COLUMN_TEXT + " text not null);";
 
     public MySQLiteHelper(Context context) {
