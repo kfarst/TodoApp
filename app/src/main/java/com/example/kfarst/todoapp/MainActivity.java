@@ -2,14 +2,12 @@ package com.example.kfarst.todoapp;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
@@ -50,13 +48,6 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
         setupListViewListener();
     }
 
-    public void onAddItem(View v) {
-        //EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        //String itemText = etNewItem.getText().toString();
-        //items.add(dataSource.createListItem(itemText, items.size()));
-        //etNewItem.setText("");
-    }
-
     private void setupListViewListener() {
         ItemClickSupport.addTo(lvItems).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
@@ -84,13 +75,13 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
         Toast.makeText(this, item.getText(), Toast.LENGTH_SHORT).show();
 
         if ((Long)item.getId() != 0) {
-            //dataSource.updateListItem(item);
+            dataSource.updateListItem(item);
             items.set(item.getPos(), item);
             itemsAdapter.notifyItemChanged(item.getPos());
         } else {
-            //ListItem newItem = dataSource.createListItem(item);
-            items.add(item);
-            itemsAdapter.notifyItemInserted(item.getPos());
+            ListItem newItem = dataSource.createListItem(item);
+            items.add(newItem);
+            itemsAdapter.notifyItemInserted(newItem.getPos());
         }
     }
 
