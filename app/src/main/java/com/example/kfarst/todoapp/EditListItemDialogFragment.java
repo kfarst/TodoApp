@@ -26,6 +26,7 @@ import android.widget.TextView;
 import java.util.Date;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 // ...
 
 public class EditListItemDialogFragment extends DialogFragment implements View.OnClickListener {
@@ -89,6 +90,17 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
         close = (ImageButton) getView().findViewById(R.id.btnItemFormClose);
         save = (ImageButton) getView().findViewById(R.id.btnItemFormSave);
 
+        calendar.setOnDateChangeListener( new CalendarView.OnDateChangeListener() {
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                GregorianCalendar date = new GregorianCalendar( year, month, dayOfMonth );
+                mListItem.setDueDate(date.getTimeInMillis());
+                calendar.setDate(date.getTimeInMillis());
+
+                getDialog().getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            }
+        });
+
         close.setOnClickListener(this);
         save.setOnClickListener(this);
 
@@ -106,22 +118,17 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-    // Fires whenever the textfield has an action performed
-    // In this case, when the "Done" button is pressed
-    // REQUIRES a 'soft keyboard' (virtual keyboard)
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnItemFormSave) {
             EditListItemDialogListener listener = (EditListItemDialogListener) getActivity();
             listener.onFinishEditDialog(setListItemValues());
         }
-
         dismiss();
     }
 
     private ListItem setListItemValues() {
         mListItem.setText(label.getText().toString());
-        mListItem.setDueDate(calendar.getDate());
         return mListItem;
     }
 }

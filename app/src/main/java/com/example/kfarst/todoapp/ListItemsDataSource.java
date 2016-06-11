@@ -19,6 +19,7 @@ public class ListItemsDataSource {
     private MySQLiteHelper dbHelper;
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_TEXT,
+            MySQLiteHelper.COLUMN_DUE_DATE,
             MySQLiteHelper.COLUMN_POSITION };
 
     public ListItemsDataSource(Context context) {
@@ -90,7 +91,8 @@ public class ListItemsDataSource {
         ListItem item = new ListItem();
         item.setId(cursor.getLong(0));
         item.setText(cursor.getString(1));
-        item.setPos(cursor.getInt(2));
+        item.setDueDate(cursor.getLong(2));
+        item.setPos(cursor.getInt(3));
         return item;
     }
 }
