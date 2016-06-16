@@ -5,22 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
+    android:gravity="center"
     android:paddingBottom="10dp"
     >
 
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtItemPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="HIGH"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/line"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/connect_help"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGray" />
+
+        <TextView
+            android:id="@+id/txtItemDueDate"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="12/12/2016" />
+
+    </TableLayout>
+
     <TextView
         android:id="@+id/label"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_weight="1"
         />
 
-    <Button
-        android:id="@+id/message_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="10sp"
-        />
 </LinearLayout>
