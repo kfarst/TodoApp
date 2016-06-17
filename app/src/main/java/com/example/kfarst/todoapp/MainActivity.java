@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
             itemsAdapter.notifyItemChanged(item.getPos());
         } else {
             ListItem newItem = dataSource.createListItem(item);
+            newItem.setPos(items.size());
             items.add(newItem);
             itemsAdapter.notifyItemInserted(newItem.getPos());
         }
