@@ -1,6 +1,9 @@
 package com.example.kfarst.todoapp;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -32,7 +36,8 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView labelTextView;
-        public Button messageButton;
+        public TextView dueDateTextView;
+        public TextView txtItemPriority;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -42,7 +47,8 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             super(itemView);
 
             labelTextView = (TextView) itemView.findViewById(R.id.label);
-            messageButton = (Button) itemView.findViewById(R.id.message_button);
+            dueDateTextView = (TextView) itemView.findViewById(R.id.txtItemDueDate);
+            txtItemPriority = (TextView) itemView.findViewById(R.id.txtItemPriority);
         }
     }
 
@@ -70,11 +76,30 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
         TextView textView = viewHolder.labelTextView;
         textView.setText(listItem.getText());
 
-        Button button = viewHolder.messageButton;
+        TextView dueDateText = viewHolder.dueDateTextView;
         SimpleDateFormat dateFormat =  new SimpleDateFormat("M/d/y");
 
-        button.setText(dateFormat.format(listItem.getDueDate()));
-        button.setEnabled(false);
+        dueDateText.setText(dateFormat.format(listItem.getDueDate()));
+
+        TextView priority = viewHolder.txtItemPriority;
+        priority.setText(listItem.getPriority());
+
+        Context context = viewHolder.itemView.getContext();
+        int textColor;
+
+        switch (listItem.getPriority()) {
+            case "HIGH":
+               textColor = R.color.high;
+                break;
+            case "MEDIUM":
+                textColor = R.color.medium;
+                break;
+            default:
+                textColor = R.color.low;
+                break;
+        }
+
+        priority.setTextColor(ContextCompat.getColor(context, textColor));
     }
 
     // Return the total count of items

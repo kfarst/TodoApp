@@ -17,16 +17,21 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import java.util.Date;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import static android.widget.AdapterView.*;
 // ...
 
 public class EditListItemDialogFragment extends DialogFragment implements View.OnClickListener {
@@ -34,6 +39,7 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
     private TextView title;
     private EditText label;
     private CalendarView calendar;
+    private Spinner priority;
     private ImageButton close;
     private ImageButton save;
 
@@ -87,6 +93,7 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
         title = (TextView) view.findViewById(R.id.listItemDialogTitle);
         label = (EditText) view.findViewById(R.id.txtLabel);
         calendar = (CalendarView) view.findViewById(R.id.calendarView);
+        priority = (Spinner) view.findViewById(R.id.spinnerPriority);
         close = (ImageButton) getView().findViewById(R.id.btnItemFormClose);
         save = (ImageButton) getView().findViewById(R.id.btnItemFormSave);
 
@@ -98,6 +105,27 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
 
                 getDialog().getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            }
+        });
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.priority_array, R.layout.support_simple_spinner_dropdown_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        priority.setAdapter(adapter);
+        priority.setSelection(adapter.getPosition(mListItem.getPriority()));
+
+        priority.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mListItem.setPriority(adapter.getItem(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mListItem.setPriority(adapter.getItem(0).toString());
             }
         });
 
@@ -129,6 +157,7 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
 
     private ListItem setListItemValues() {
         mListItem.setText(label.getText().toString());
+        mListItem.setPriority(priority.getSelectedItem().toString());
         return mListItem;
     }
 }

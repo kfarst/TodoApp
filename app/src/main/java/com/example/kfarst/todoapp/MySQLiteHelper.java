@@ -14,10 +14,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TEXT = "text";
     public static final String COLUMN_POSITION = "pos";
+    public static final String COLUMN_PRIORITY = "priority";
     public static final String COLUMN_DUE_DATE = "due_date";
 
     private static final String DATABASE_NAME = "list_items.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
@@ -25,6 +26,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " integer primary key autoincrement, "
             + COLUMN_POSITION + " integer not null,"
             + COLUMN_DUE_DATE + " integer not null,"
+            + COLUMN_PRIORITY + " text not null,"
             + COLUMN_TEXT + " text not null);";
 
     public MySQLiteHelper(Context context) {

@@ -8,6 +8,7 @@ public class ListItem implements java.io.Serializable {
     private long id;
     private int pos;
     private String text;
+    private String priority;
     private long dueDate;
 
     public ListItem() {
@@ -17,9 +18,10 @@ public class ListItem implements java.io.Serializable {
         this.text = text;
     }
 
-    public ListItem(int pos, String text, long dueDate) {
+    public ListItem(int pos, String text, String priority, long dueDate) {
         this.pos = pos;
         this.text = text;
+        this.priority = priority;
         this.dueDate = dueDate;
     }
 
@@ -53,6 +55,14 @@ public class ListItem implements java.io.Serializable {
 
     public void setDueDate(long dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     // Will be used by the ArrayAdapter in the ListView

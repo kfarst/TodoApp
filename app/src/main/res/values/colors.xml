@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="lightGray">#DCDCDC</color>
     <color name="gray">#C0C0C0</color>
+    <color name="low">#009933</color>
+    <color name="medium">#CCCC00</color>
+    <color name="high">#990000</color>
 </resources>

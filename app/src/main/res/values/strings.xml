@@ -5,4 +5,10 @@
     <string name="cancel">Cancel</string>
     <string name="add_list_item">Add List Item</string>
     <string name="edit_list_item">Edit List Item</string>
+
+    <string-array name="priority_array">
+        <item>LOW</item>
+        <item>MEDIUM</item>
+        <item>HIGH</item>
+    </string-array>
 </resources>
