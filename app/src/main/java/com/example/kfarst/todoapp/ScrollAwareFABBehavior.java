@@ -1,4 +1,4 @@
-package com.example.kfarst.todoapp.support;
+package com.example.kfarst.todoapp;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
