@@ -58,6 +58,8 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
     public static EditListItemDialogFragment newInstance(ListItem item) {
         EditListItemDialogFragment frag = new EditListItemDialogFragment();
         Bundle args = new Bundle();
+
+        // List item can be new or existing
         args.putSerializable("listItem", item);
         frag.setArguments(args);
         return frag;
@@ -87,9 +89,10 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Fetch arguments from bundle
+
         mListItem = (ListItem) getArguments().getSerializable("listItem");
 
+        // View elements
         title = (TextView) view.findViewById(R.id.listItemDialogTitle);
         label = (EditText) view.findViewById(R.id.txtLabel);
         calendar = (CalendarView) view.findViewById(R.id.calendarView);
@@ -97,6 +100,7 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
         close = (ImageButton) getView().findViewById(R.id.btnItemFormClose);
         save = (ImageButton) getView().findViewById(R.id.btnItemFormSave);
 
+        // Update due date when new calendar date is selected
         calendar.setOnDateChangeListener( new CalendarView.OnDateChangeListener() {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 GregorianCalendar date = new GregorianCalendar( year, month, dayOfMonth );
@@ -120,11 +124,13 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
         priority.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Set priority to selected dropdown item
                 mListItem.setPriority(adapter.getItem(position).toString());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // Defaults to "LOW" priority
                 mListItem.setPriority(adapter.getItem(0).toString());
             }
         });
@@ -132,6 +138,7 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
         close.setOnClickListener(this);
         save.setOnClickListener(this);
 
+        // Update dialog title based on whether the list item is new or existing
         title.setText((Long)mListItem.getId() == 0 ? R.string.add_list_item : R.string.edit_list_item);
 
         if (mListItem.getDueDate() != 0)
@@ -148,6 +155,8 @@ public class EditListItemDialogFragment extends DialogFragment implements View.O
 
     @Override
     public void onClick(View v) {
+        // If save button was clicked, update list item with set values before saving
+        // Either way, dismiss the dialog
         if (v.getId() == R.id.btnItemFormSave) {
             EditListItemDialogListener listener = (EditListItemDialogListener) getActivity();
             listener.onFinishEditDialog(setListItemValues());
