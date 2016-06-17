@@ -14,17 +14,6 @@ public class ListItem implements java.io.Serializable {
     public ListItem() {
     }
 
-    public ListItem(String text) {
-        this.text = text;
-    }
-
-    public ListItem(int pos, String text, String priority, long dueDate) {
-        this.pos = pos;
-        this.text = text;
-        this.priority = priority;
-        this.dueDate = dueDate;
-    }
-
     public void setId(long id) {
        this.id = id;
     }
