@@ -75,9 +75,10 @@ public class ListItemsDataSource {
 
     public List<ListItem> getAllListItems() {
         List<ListItem> listItems = new ArrayList<ListItem>();
+        String orderBy = "case when " + MySQLiteHelper.COLUMN_PRIORITY + " is 'HIGH' then 0 when " + MySQLiteHelper.COLUMN_PRIORITY + " is 'MEDIUM' then 1 else 2 end, " + MySQLiteHelper.COLUMN_DUE_DATE + " desc";
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LIST_ITEMS,
-                allColumns, null, null, null, null, null);
+                allColumns, null, null, null, null, orderBy);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
