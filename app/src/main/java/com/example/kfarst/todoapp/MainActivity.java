@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
             items.add(newItem);
         }
 
+        // High priority items should be at the top
         Collections.sort(items, Collections.reverseOrder());
         itemsAdapter.notifyDataSetChanged();
 

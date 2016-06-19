@@ -61,12 +61,14 @@ public class ListItem implements java.io.Serializable, Comparable<ListItem> {
            if (this.getDueDate() == another.getDueDate()) {
                rank = 0;
            } else if (this.getDueDate() < another.getDueDate()) {
+               // Earlier items should be further down the list
                rank =  -1;
            } else {
-
                rank = 1;
            }
        } else if (this.getPriority().equals("HIGH") || (this.getPriority().equals("MEDIUM") && another.getPriority().equals("LOW"))) {
+           // If an item isn't high priority or medium with the other item being low
+           // it can be assumed it needs to be lower down the list
            rank = 1;
        }
 
