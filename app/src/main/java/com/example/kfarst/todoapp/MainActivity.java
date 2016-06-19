@@ -76,15 +76,20 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
         // Toast the name to display temporarily on screen
         Toast.makeText(this, item.getText(), Toast.LENGTH_SHORT).show();
 
+        ListItem newItem = null;
+
         if ((Long)item.getId() != 0) {
             dataSource.updateListItem(item);
         } else {
-            ListItem newItem = dataSource.createListItem(item);
+            newItem = dataSource.createListItem(item);
             items.add(newItem);
         }
 
         Collections.sort(items, Collections.reverseOrder());
         itemsAdapter.notifyDataSetChanged();
+
+        int itemIndex = items.indexOf(newItem != null ? newItem : item);
+        lvItems.scrollToPosition(itemIndex);
     }
 
     public void renderListItemFragment(View v) {
