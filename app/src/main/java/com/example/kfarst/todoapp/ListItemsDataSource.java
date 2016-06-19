@@ -20,8 +20,7 @@ public class ListItemsDataSource {
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_TEXT,
             MySQLiteHelper.COLUMN_DUE_DATE,
-            MySQLiteHelper.COLUMN_PRIORITY,
-            MySQLiteHelper.COLUMN_POSITION };
+            MySQLiteHelper.COLUMN_PRIORITY };
 
     public ListItemsDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -38,7 +37,6 @@ public class ListItemsDataSource {
     public ListItem createListItem(ListItem item) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TEXT, item.getText());
-        values.put(MySQLiteHelper.COLUMN_POSITION, item.getPos());
         values.put(MySQLiteHelper.COLUMN_PRIORITY, item.getPriority());
         values.put(MySQLiteHelper.COLUMN_DUE_DATE, item.getDueDate());
         long insertId = database.insert(MySQLiteHelper.TABLE_LIST_ITEMS, null,
@@ -56,7 +54,6 @@ public class ListItemsDataSource {
         long id = item.getId();
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TEXT, item.getText());
-        values.put(MySQLiteHelper.COLUMN_POSITION, item.getPos());
         values.put(MySQLiteHelper.COLUMN_PRIORITY, item.getPriority());
         values.put(MySQLiteHelper.COLUMN_DUE_DATE, item.getDueDate());
         int editedID = database.update(MySQLiteHelper.TABLE_LIST_ITEMS, values, MySQLiteHelper.COLUMN_ID + " = " + id, null);
@@ -97,7 +94,6 @@ public class ListItemsDataSource {
         item.setText(cursor.getString(1));
         item.setDueDate(cursor.getLong(2));
         item.setPriority(cursor.getString(3));
-        item.setPos(cursor.getInt(4));
         return item;
     }
 }

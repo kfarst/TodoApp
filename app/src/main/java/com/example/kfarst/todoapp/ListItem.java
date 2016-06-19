@@ -6,7 +6,6 @@ package com.example.kfarst.todoapp;
 public class ListItem implements java.io.Serializable {
     private static final long serialVersionUID = 7526472295622776147L;
     private long id;
-    private int pos;
     private String text;
     private String priority;
     private long dueDate;
@@ -20,14 +19,6 @@ public class ListItem implements java.io.Serializable {
 
     public long getId() {
         return this.id;
-    }
-
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
-
-    public int getPos() {
-        return this.pos;
     }
 
     public void setText(String text) {
