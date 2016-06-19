@@ -16,6 +16,7 @@ import com.example.kfarst.todoapp.support.DividerItemDecoration;
 import com.example.kfarst.todoapp.support.ItemClickSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements EditListItemDialogFragment.EditListItemDialogListener {
     ArrayList<ListItem> items;
@@ -71,20 +72,19 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
     }
 
     @Override
-    public void onFinishEditDialog(ListItem item) {
+    public void onFinishEditDialog(final ListItem item) {
         // Toast the name to display temporarily on screen
         Toast.makeText(this, item.getText(), Toast.LENGTH_SHORT).show();
 
         if ((Long)item.getId() != 0) {
             dataSource.updateListItem(item);
-            items.set(item.getPos(), item);
-            itemsAdapter.notifyItemChanged(item.getPos());
         } else {
             ListItem newItem = dataSource.createListItem(item);
-            newItem.setPos(items.size());
             items.add(newItem);
-            itemsAdapter.notifyItemInserted(newItem.getPos());
         }
+
+        Collections.sort(items, Collections.reverseOrder());
+        itemsAdapter.notifyDataSetChanged();
     }
 
     public void renderListItemFragment(View v) {
@@ -111,8 +111,9 @@ public class MainActivity extends AppCompatActivity implements EditListItemDialo
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
+                        int pos = items.indexOf(itemToDelete);
+                        itemsAdapter.notifyItemRemoved(pos);
                         items.remove(dataSource.deleteListItem(itemToDelete));
-                        itemsAdapter.notifyItemRemoved(position);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
